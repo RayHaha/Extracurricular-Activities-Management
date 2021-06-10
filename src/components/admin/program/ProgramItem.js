@@ -11,7 +11,7 @@ const ProgramItem = props => {
                 <div className="ui grid">
                     <div className="five wide column">
                         <div className="inline field">
-                            <div className="ui right pointing green basic label">
+                            <div className="ui green basic label">
                                 Name
                             </div>
                             <div className="ui basic label">
@@ -19,7 +19,7 @@ const ProgramItem = props => {
                             </div>
                         </div>
                         <div className="inline field">
-                            <div className="ui right pointing green basic label">
+                            <div className="ui green basic label">
                                 Abbreviation
                             </div>
                             <div className="ui basic label">
@@ -27,7 +27,7 @@ const ProgramItem = props => {
                             </div>
                         </div>
                         <div className="inline field">
-                            <div className="ui right pointing green basic label">
+                            <div className="ui green basic label">
                                 Type
                             </div>
                             <div className="ui basic label">
@@ -35,25 +35,25 @@ const ProgramItem = props => {
                             </div>
                         </div>
                         <div className="inline field">
-                            <div className="ui right pointing green basic label">
+                            <div className="ui green basic label">
                                 School Level Recommendation
                             </div>
                             <div className="ui basic label">
-                                {program.SchoolLevelRecommendation}
+                                {program.Level}
                             </div>
                         </div>
                     </div>
                     <div className="five wide column">
                         <div className="inline field">
-                            <div className="ui right pointing green basic label">
+                            <div className="ui green basic label">
                                 Duration Expectation (hour)
                             </div>
                             <div className="ui basic label">
-                                {program.DurationExpectation}
+                                {program.Duration}
                             </div>
                         </div>
                         <div className="inline field">
-                            <div className="ui right pointing green basic label">
+                            <div className="ui green basic label">
                                 Start Date
                             </div>
                             <div className="ui basic label">
@@ -61,7 +61,7 @@ const ProgramItem = props => {
                             </div>
                         </div>
                         <div className="inline field">
-                            <div className="ui right pointing green basic label">
+                            <div className="ui green basic label">
                                 End Date
                             </div>
                             <div className="ui basic label">
@@ -71,7 +71,7 @@ const ProgramItem = props => {
                     </div>
                     <div className="six wide column">
                         <div className="inline field">
-                            <div className="ui right pointing green basic label">
+                            <div className="ui green basic label">
                                 Director
                             </div>
                             <div className="ui basic label">
@@ -79,7 +79,7 @@ const ProgramItem = props => {
                             </div>
                         </div>
                         <div className="inline field">
-                            <div className="ui right pointing green basic label">
+                            <div className="ui green basic label">
                                 Manager
                             </div>
                             <div className="ui basic label">
@@ -87,7 +87,7 @@ const ProgramItem = props => {
                             </div>
                         </div>
                         <div className="inline field">
-                            <div className="ui right pointing green basic label">
+                            <div className="ui green basic label">
                                 School Year
                             </div>
                             <div className="ui basic label">

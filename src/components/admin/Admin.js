@@ -27,13 +27,8 @@ const Admin = () => {
                     <button className="ui negative basic button"><Link to="/">Logout</Link></button>
                 </div>
             </div>
-            <div className="ui grid">
-                <div className="ten wide column">
-                    {route}
-                </div>
-                <div className="six wide column">
-                    Notification
-                </div>
+            <div className="ui container">
+                {route}
             </div>
         </div>
     );

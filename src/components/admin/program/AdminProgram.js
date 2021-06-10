@@ -1,21 +1,15 @@
 import React, { useState } from 'react';
-import PopUp from '../../shared/PopUp';
 import ProgramList from './ProgramList';
+import ProgramCreate from './ProgramCreate';
 
 const AdminProgram = () => {
-    const [showPopUp, setShowPopUp] = useState(false);
-
-    const togglePopup = () => {
-        setShowPopUp(!showPopUp);
-    }
-
-    const programs = [
+    const programsInit = [
         {
             Name: "Basketball",
             Abbreviation: "B",
             Type: "Sport",
-            SchoolLevelRecommendation: "high",
-            DurationExpectation: 20,
+            Level: "high",
+            Duration: 20,
             StartDate: new Date(),
             EndDate: new Date(),
             Director: "Ray",
@@ -26,8 +20,8 @@ const AdminProgram = () => {
             Name: "Baseball",
             Abbreviation: "Ba",
             Type: "Sport",
-            SchoolLevelRecommendation: "high",
-            DurationExpectation: 20,
+            Level: "high",
+            Duration: 20,
             StartDate: new Date(),
             EndDate: new Date(),
             Director: "Ray",
@@ -35,14 +29,28 @@ const AdminProgram = () => {
             SchoolYear: 2000
         }
     ];
+    
+    const [programs, setPrograms] = useState(programsInit);
+    const [showPopUp, setShowPopUp] = useState(false);
+
+    const openPopup = () => {
+        setShowPopUp(true);
+    }
+    
+    const closePopup = (program) => {
+        setShowPopUp(false);
+
+        programsInit.push(program);
+        setPrograms(programsInit);
+    }
 
     return (
         <div>
-            <button className="ui primary basic button" onClick={() => togglePopup()}>Create Program</button>
-            
-            {showPopUp ? <PopUp text='Close Me' closePopup={() => togglePopup()} /> : null}
-
+            <button className="ui primary basic button" onClick={openPopup}>Create Program</button>
             <ProgramList programs={programs} />
+
+            {showPopUp ? <ProgramCreate closePopup={closePopup} /> : null}
+
 
         </div>
     );
