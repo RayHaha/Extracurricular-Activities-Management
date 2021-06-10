@@ -17,14 +17,16 @@ const Admin = () => {
     }else{
         route = <AdminStudent />;
     }
+    let notificationNumber = 0;
 
     return (
         <div>
             <div className="ui secondary pointing menu">
-                <button className="ui orange basic button" onClick={() => onCatelogClick("Program")}>Program</button>
-                <button className="ui secondary basic button" onClick={() => onCatelogClick("Student")}>Student</button>
+                <button className="ui orange button" onClick={() => onCatelogClick("Program")}>Program</button>
+                <button className="ui secondary button" onClick={() => onCatelogClick("Student")}>Student</button>
+                <button className="ui purple button">Notification({notificationNumber})</button>
                 <div className="right menu">
-                    <button className="ui negative basic button"><Link to="/">Logout</Link></button>
+                    <button className="ui primary basic button"><Link to="/">Logout</Link></button>
                 </div>
             </div>
             <div className="ui container">

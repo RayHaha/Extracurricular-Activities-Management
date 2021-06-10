@@ -39,14 +39,15 @@ const AdminProgram = () => {
     
     const closePopup = (program) => {
         setShowPopUp(false);
-
-        programsInit.push(program);
-        setPrograms(programsInit);
+        if(program.Name){
+            programsInit.push(program);
+            setPrograms(programsInit);
+        }
     }
 
     return (
         <div>
-            <button className="ui primary basic button" onClick={openPopup}>Create Program</button>
+            <button className="ui primary button" onClick={openPopup}>Create Program</button>
             <ProgramList programs={programs} />
 
             {showPopUp ? <ProgramCreate closePopup={closePopup} /> : null}

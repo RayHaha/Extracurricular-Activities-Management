@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './ProgramCreate.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import FormErrorList from './FormErrorList';
 
 const ProgramCreate = props => {
     const [Name, setName] = useState("");
@@ -15,38 +16,103 @@ const ProgramCreate = props => {
     const [SchoolYear, setSchoolYear] = useState(new Date().getFullYear());
     const [Duration, setDuration] = useState(0);
 
+    const [formValid, setFormValid] = useState(true);
+    const [nameValid, setNameValid] = useState("");
+    const [abbreviationValid, setAbbreviationValid] = useState("");
+    const [durationValid, setDurationValid] = useState("");
+    const [dateValid, setDateValid] = useState("");
+    const [errorMessageList, setErrorMessageList] = useState([]);
+
+    let valid = true;
+
     const onFormSubmit = e => {
         e.preventDefault();
-        
-        const program = {
-            Name,
-            Abbreviation,
-            Type,
-            Level,
-            Manager,
-            Director,
-            StartDate,
-            EndDate,
-            SchoolYear,
-            Duration
-        };
 
-        props.closePopup(program);
+        let errorList = [];
+        setFormValid(true);
+
+        if (Name === "") {
+            valid = false;
+            setNameValid("error");
+            setFormValid(false);
+            errorList.push("Name is required.");
+        }else{
+            setNameValid("");
+        }
+        if (Abbreviation === "") {
+            valid = false;
+            setAbbreviationValid("error");
+            setFormValid(false);
+            errorList.push("Abbreviation is required.");
+        }else{
+            const abbValid = /^[0-9a-zA-Z]+$/
+            if(!abbValid.test(Abbreviation)){
+                setAbbreviationValid("error");
+                setFormValid(false);
+                errorList.push("You can only use letter or number in Abbreviation.");
+            }else{
+                if(Abbreviation.length>5){
+                    setAbbreviationValid("error");
+                    setFormValid(false);
+                    errorList.push("The length of Abbreviation should be smaller than 6.");
+                }else{
+                    setAbbreviationValid("");
+                }
+            }
+        }
+        if (Duration <= 0) {
+            valid = false;
+            setDurationValid("error");
+            setFormValid(false);
+            errorList.push("Duration expectation need to be more than 0 hour");
+        }else{
+            setDurationValid("");
+        }
+
+        if(StartDate.getTime() > EndDate.getTime()){
+            valid = false;
+            setDateValid("error");
+            setFormValid(false);
+            errorList.push("Start Date and End Date are wrong.");
+        }else{
+            setDateValid("");
+        }
+
+        setErrorMessageList(errorList);
+
+        if (valid) {
+
+            const program = {
+                Name,
+                Abbreviation,
+                Type,
+                Level,
+                Manager,
+                Director,
+                StartDate,
+                EndDate,
+                SchoolYear,
+                Duration
+            };
+
+            props.closePopup(program);
+        }
     }
 
     return (
         <div className='popup-box'>
             <div className='box'>
-                <form className="ui form" onSubmit={onFormSubmit}>
+                <form className="ui form error" onSubmit={onFormSubmit}>
+                    {formValid ? null : <FormErrorList errorMessageList={errorMessageList} />}
                     <h4 className="ui dividing header">Create Program</h4>
                     <div className="two fields">
-                        <div className="field">
+                        <div className={`required field ${nameValid}`}>
                             <label>Name</label>
                             <input type="text" name="Name" placeholder="name" onChange={e => setName(e.target.value)} />
                         </div>
-                        <div className="field">
+                        <div className={`required field ${abbreviationValid}`}>
                             <label>Abbreviation</label>
-                            <input type="text" name="Abbreviation" placeholder="Abbreviation" onChange={e => setAbbreviation(e.target.value)}/>
+                            <input type="text" name="Abbreviation" placeholder="Abbreviation" onChange={e => setAbbreviation(e.target.value)} />
                         </div>
                     </div>
                     <div className="two fields">
@@ -86,11 +152,11 @@ const ProgramCreate = props => {
                         </div>
                     </div>
                     <div className="fields">
-                        <div className="three wide field">
+                        <div className={`three wide field ${dateValid}`}>
                             <label>Start Date</label>
                             <DatePicker selected={StartDate} onChange={(date) => setStartDate(date)} />
                         </div>
-                        <div className="three wide field">
+                        <div className={`three wide field ${dateValid}`}>
                             <label>End Date</label>
                             <DatePicker selected={EndDate} onChange={(date) => setEndDate(date)} />
                         </div>
@@ -98,13 +164,13 @@ const ProgramCreate = props => {
                             <label>School Year</label>
                             <DatePicker selected={SchoolYear} onChange={(date) => setSchoolYear(date)} showYearPicker dateFormat="yyyy" />
                         </div>
-                        <div className="seven wide field">
+                        <div className={`seven wide field required ${durationValid}`}>
                             <label>Duration Expectation (hour)</label>
-                            <input type="number" name="DurationExpectation" placeholder="0" onChange={e => setDuration(e.target.value)}/>
+                            <input type="number" name="DurationExpectation" min="0" placeholder="0" onChange={e => setDuration(e.target.value)} />
                         </div>
                     </div>
-                    <button className="ui red basic button" onClick={props.closePopup}>Cancel</button>
-                    <input className="ui green basic button" type="submit" value="Submit" />
+                    <button className="ui red button" onClick={props.closePopup}>Cancel</button>
+                    <input className="ui green button" type="submit" value="Submit" />
                 </form>
             </div>
         </div>
