@@ -2,12 +2,8 @@ import React from 'react';
 
 const ProgramItem = props => {
     const { program } = props;
-    const StartDate = program.StartDate.getFullYear() + '-' + (program.StartDate.getMonth() + 1) + '-' + program.StartDate.getDate();
-    const EndDate = program.EndDate.getFullYear() + '-' + (program.EndDate.getMonth() + 1) + '-' + program.EndDate.getDate();
-
-    const clickListen = () => {
-        console.log("Click");
-    }
+    const StartDate = program.StartDate.substring(0,10);
+    const EndDate = program.EndDate.substring(0,10);
 
     return (
         <div className="item">
@@ -95,7 +91,7 @@ const ProgramItem = props => {
                                 School Level Recommendation
                             </div>
                             <div className="ui basic label">
-                                {program.Level}
+                                {program.Recommandation_Level}
                             </div>
                         </div>
                     </div>

@@ -8,7 +8,7 @@ const ProgramCreate = props => {
     const [Name, setName] = useState("");
     const [Abbreviation, setAbbreviation] = useState("");
     const [Type, setType] = useState("Sport");
-    const [Level, setLevel] = useState("Elementary");
+    const [Recommandation_Level, setRecommandation_Level] = useState("Elementary");
     const [Manager, setManager] = useState("Ray");
     const [Director, setDirector] = useState("Ray");
     const [StartDate, setStartDate] = useState(new Date());
@@ -81,16 +81,19 @@ const ProgramCreate = props => {
         setErrorMessageList(errorList);
 
         if (valid) {
+            const sDate = StartDate.getFullYear() + '-' + (StartDate.getMonth() + 1) + '-' + StartDate.getDate();
+            const eDate = EndDate.getFullYear() + '-' + (EndDate.getMonth() + 1) + '-' + EndDate.getDate();
+    
 
             const program = {
                 Name,
                 Abbreviation,
                 Type,
-                Level,
+                Recommandation_Level,
                 Manager,
                 Director,
-                StartDate,
-                EndDate,
+                StartDate: sDate,
+                EndDate: eDate,
                 SchoolYear,
                 Duration
             };
@@ -126,7 +129,7 @@ const ProgramCreate = props => {
                         </div>
                         <div className="field">
                             <label>School Level Recommendation</label>
-                            <select className="ui fluid dropdown" onChange={e => setLevel(e.target.value)}>
+                            <select className="ui fluid dropdown" onChange={e => setRecommandation_Level(e.target.value)}>
                                 <option value="Elementary">Elementary</option>
                                 <option value="Middle">Middle</option>
                                 <option value="High">High</option>

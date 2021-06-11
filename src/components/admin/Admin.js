@@ -3,17 +3,27 @@ import { Link } from 'react-router-dom';
 
 import AdminProgram from './program/AdminProgram';
 import AdminStudent from './student/AdminStudent';
+import backend from '../../api/backend';
 
 const Admin = () => {
     const[catelog, setCatelog] = useState("Program");
+    const[programs, setPrograms] = useState([]);
+
+    const getPrograms = async () => {
+        const response = await backend.get('/program');
+        setPrograms(response.data);
+    }
 
     const onCatelogClick = (catelog) => {
         setCatelog(catelog);
+        if(catelog==="Program"){
+            getPrograms();
+        }
     }
 
     let route;
     if(catelog==="Program"){
-        route = <AdminProgram />;
+        route = <AdminProgram programs={programs} />;
     }else{
         route = <AdminStudent />;
     }
