@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './ProgramCreate.css';
+import './PopupCreate.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import FormErrorList from './FormErrorList';
@@ -24,11 +24,10 @@ const ProgramCreate = props => {
     const [errorMessageList, setErrorMessageList] = useState([]);
 
     let valid = true;
+    let errorList = [];
 
-    const onFormSubmit = e => {
-        e.preventDefault();
-
-        let errorList = [];
+    const checkValid = () => {
+        errorList = [];
         setFormValid(true);
 
         if (Name === "") {
@@ -79,6 +78,12 @@ const ProgramCreate = props => {
         }
 
         setErrorMessageList(errorList);
+    }
+
+    const onFormSubmit = e => {
+        e.preventDefault();
+
+        checkValid();
 
         if (valid) {
             const sDate = StartDate.getFullYear() + '-' + (StartDate.getMonth() + 1) + '-' + StartDate.getDate();
@@ -98,7 +103,7 @@ const ProgramCreate = props => {
                 Duration
             };
 
-            props.closePopup(program);
+            props.closePopupProgram(program);
         }
     }
 
@@ -111,7 +116,7 @@ const ProgramCreate = props => {
                     <div className="two fields">
                         <div className={`required field ${nameValid}`}>
                             <label>Name</label>
-                            <input type="text" name="Name" placeholder="name" onChange={e => setName(e.target.value)} />
+                            <input type="text" name="Name" placeholder="Name" onChange={e => setName(e.target.value)} />
                         </div>
                         <div className={`required field ${abbreviationValid}`}>
                             <label>Abbreviation</label>
@@ -172,7 +177,7 @@ const ProgramCreate = props => {
                             <input type="number" name="DurationExpectation" min="0" placeholder="0" onChange={e => setDuration(e.target.value)} />
                         </div>
                     </div>
-                    <button className="ui red button" onClick={props.closePopup}>Cancel</button>
+                    <button className="ui red button" onClick={props.closePopupProgram}>Cancel</button>
                     <input className="ui green button" type="submit" value="Submit" />
                 </form>
             </div>

@@ -1,62 +1,45 @@
 import React, { useState } from 'react';
 import ProgramList from './ProgramList';
 import ProgramCreate from './ProgramCreate';
+import EventCreate from './EventCreate';
 import backend from '../../../api/backend';
 
 const AdminProgram = props => {
     const { programs } = props;
-    console.log(programs);
-    // const [programs, setPrograms] = useState([]);
 
-    // const getPrograms = async () => {
-    //     const response = await backend.get('/program');
-    //     setPrograms(response.data);
-    // }
-
-    // const programsInit = [
-    //     {
-    //         Name: "Basketball",
-    //         Abbreviation: "B",
-    //         Type: "Sport",
-    //         Level: "High",
-    //         Duration: 20,
-    //         StartDate: new Date(),
-    //         EndDate: new Date(),
-    //         Director: "Ray",
-    //         Manager: "Ray",
-    //         SchoolYear: 2000
-    //     },
-    //     {
-    //         Name: "Baseball",
-    //         Abbreviation: "Ba",
-    //         Type: "Sport",
-    //         Level: "High",
-    //         Duration: 20,
-    //         StartDate: new Date(),
-    //         EndDate: new Date(),
-    //         Director: "Ray",
-    //         Manager: "Ray",
-    //         SchoolYear: 2000
-    //     }
-    // ];
+    const [showPopUpProgram, setShowPopUpProgram] = useState(false);
+    const [showPopUpEvent, setShowPopUpEvent] = useState(false);
+    const [programList, setProgramList] = useState([]);
     
-    // const [programs, setPrograms] = useState(programsInit);
-    const [showPopUp, setShowPopUp] = useState(false);
+    
 
-    const openPopup = () => {
-        setShowPopUp(true);
+    const openPopupProgram = () => {
+        setShowPopUpProgram(true);
     }
     
-    const closePopup = (program) => {
-        setShowPopUp(false);
+    const closePopupProgram = (program) => {
+        setShowPopUpProgram(false);
         if(program.Name){
             programs.push(program);
 
-            //TODO: post to database
-            const response = backend.post('/program', program).then(res => {
-                console.log(res);
+            backend.post('/program', program).then(res => {
+                if(res.status!==200) console.log(res);
             });
         }
+    }
+
+    const openPopupEvent = () => {
+        setShowPopUpEvent(true);
+        let programNameList = [];
+        for(let i=0; i<programs.length; i++){
+            programNameList.push(programs[i].Name);
+        }
+        setProgramList(programNameList);
+        
+    }
+    
+    const closePopupEvent = () => {
+        setShowPopUpEvent(false);
     }
 
     if(programs.length<1){
@@ -67,10 +50,12 @@ const AdminProgram = props => {
 
     return (
         <div>
-            <button className="ui primary button" onClick={openPopup}>Create Program</button>
+            <button className="ui primary button" onClick={openPopupProgram}>Create Program</button>
+            <button className="ui olive button" onClick={openPopupEvent}>Create Event</button>
             <ProgramList programs={programs} />
 
-            {showPopUp ? <ProgramCreate closePopup={closePopup} /> : null}
+            {showPopUpProgram ? <ProgramCreate closePopupProgram={closePopupProgram} /> : null}
+            {showPopUpEvent ? <EventCreate closePopupEvent={closePopupEvent} programList={programList} /> : null}
 
 
         </div>
