@@ -25,7 +25,7 @@ app.use(express.urlencoded());
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json());
 
-app.get('/program', (req, res) => {
+app.get('/admin/program', (req, res) => {
     let sql = 'SELECT * FROM program';
     let query = db.query(sql, (err, results) => {
         if(err) throw err;
@@ -33,17 +33,7 @@ app.get('/program', (req, res) => {
     })
 });
 
-// app.get('/program/event', (req, res) => {
-//     console.log();
-//     let q = "'" + req.query.programName + "'";
-//     let sql = 'SELECT Name FROM event_activities where ProgramName = ' + q;
-//     let query = db.query(sql, (err, results) => {
-//         if(err) throw err;
-//         res.send(results);
-//     })
-// });
-
-app.post('/program', (req, res) => {
+app.post('/admin/program', (req, res) => {
     let post = req.body;
     let sql = 'INSERT INTO program SET ?';
     let query = db.query(sql, post, err => {
@@ -52,7 +42,7 @@ app.post('/program', (req, res) => {
     })
 })
 
-app.post('/event', (req, res) => {
+app.post('/admin/event', (req, res) => {
     let post = req.body.event;
     let sql1 = 'INSERT INTO event_activities SET ?';
     let name = req.body.programEvents;
@@ -69,8 +59,24 @@ app.post('/event', (req, res) => {
     })
 })
 
-app.get('/event', (req, res) => {
+app.get('/admin/event', (req, res) => {
     let sql = 'SELECT * FROM event_activities';
+    let query = db.query(sql, (err, results) => {
+        if(err) throw err;
+        res.send(results);
+    })
+});
+
+app.get('/admin/student', (req, res) => {
+    let sql = 'SELECT * FROM student';
+    let query = db.query(sql, (err, results) => {
+        if(err) throw err;
+        res.send(results);
+    })
+});
+
+app.get('/admin/event_record', (req, res) => {
+    let sql = 'SELECT * FROM event_record';
     let query = db.query(sql, (err, results) => {
         if(err) throw err;
         res.send(results);

@@ -12,13 +12,13 @@ const AdminEvent = () => {
 
     useEffect(() => {
         const getEvents = async () => {
-            const response = await backend.get('/event');
+            const response = await backend.get('/admin/event');
             setEvents(response.data);
         }
         getEvents();
 
         const getPrograms = async () => {
-            const response = await backend.get('/program');
+            const response = await backend.get('/admin/program');
             setPrograms(response.data);
         }
         getPrograms();
@@ -52,7 +52,7 @@ const AdminEvent = () => {
             e.push(event);
             setEvents(e);
 
-            backend.post('/event', eventToAdd).then(res => {
+            backend.post('/admin/event', eventToAdd).then(res => {
                 if (res.status !== 200) console.log(res);
             });
         }

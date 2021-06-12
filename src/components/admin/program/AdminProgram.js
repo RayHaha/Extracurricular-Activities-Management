@@ -6,13 +6,11 @@ import backend from '../../../api/backend';
 const AdminProgram = () => {
 
     const [showPopUpProgram, setShowPopUpProgram] = useState(false);
-    const [showPopUpEvent, setShowPopUpEvent] = useState(false);
-    const [programList, setProgramList] = useState([]);
     const [programs, setPrograms] = useState([]);
 
     useEffect(() => {
         const getPrograms = async () => {
-            const response = await backend.get('/program');
+            const response = await backend.get('/admin/program');
             setPrograms(response.data);
         }
         getPrograms();
@@ -29,7 +27,7 @@ const AdminProgram = () => {
             p.push(program);
             setPrograms(p);
 
-            backend.post('/program', program).then(res => {
+            backend.post('/admin/program', program).then(res => {
                 if (res.status !== 200) console.log(res);
             });
         }

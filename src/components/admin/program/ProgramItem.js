@@ -14,7 +14,7 @@ const ProgramItem = props => {
         <div className="item">
             <div className="content">
                 <div className="ui grid">
-                    <div className="four wide column">
+                    <div className="three wide column">
                         <div className="inline field">
                             <div className="ui grey basic label">
                                 Name
@@ -48,7 +48,7 @@ const ProgramItem = props => {
                             </div>
                         </div>
                     </div>
-                    <div className="four wide column">
+                    <div className="three wide column">
                         <div className="inline field">
                             <div className="ui grey basic label">
                                 Director
@@ -74,7 +74,7 @@ const ProgramItem = props => {
                             </div>
                         </div>
                     </div>
-                    <div className="four wide column">
+                    <div className="five wide column">
                         <div className="inline field">
                             <div className="ui grey basic label">
                                 Manager
@@ -100,7 +100,7 @@ const ProgramItem = props => {
                             </div>
                         </div>
                     </div>
-                    <div className="four wide column">
+                    <div className="five wide column">
                         <div className="ui grey basic label">
                             Events
                         </div>
