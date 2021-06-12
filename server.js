@@ -25,27 +25,6 @@ app.use(express.urlencoded());
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json());
 
-app.get('/insert', (req, res) => {
-    let post = {
-        Name: "Basketball",
-        Abbreviation: "BASKE",
-        Type: "Sport",
-        Recommandation_Level: "High",
-        Duration: 20,
-        StartDate: new Date(),
-        EndDate: new Date(),
-        Director: "Ray",
-        Manager: "Ken",
-        SchoolYear: 2000
-    };
-    let sql = 'INSERT INTO program SET ?';
-    let query = db.query(sql, post, err => {
-        if(err) throw err;
-
-        res.send('insert success');
-    })
-});
-
 app.get('/program', (req, res) => {
     let sql = 'SELECT * FROM program';
     let query = db.query(sql, (err, results) => {
@@ -54,15 +33,15 @@ app.get('/program', (req, res) => {
     })
 });
 
-app.get('/program/event', (req, res) => {
-    console.log();
-    let q = "'" + req.query.programName + "'";
-    let sql = 'SELECT Name FROM event_activities where ProgramName = ' + q;
-    let query = db.query(sql, (err, results) => {
-        if(err) throw err;
-        res.send(results);
-    })
-});
+// app.get('/program/event', (req, res) => {
+//     console.log();
+//     let q = "'" + req.query.programName + "'";
+//     let sql = 'SELECT Name FROM event_activities where ProgramName = ' + q;
+//     let query = db.query(sql, (err, results) => {
+//         if(err) throw err;
+//         res.send(results);
+//     })
+// });
 
 app.post('/program', (req, res) => {
     let post = req.body;
@@ -89,6 +68,14 @@ app.post('/event', (req, res) => {
         res.send('inserted success');
     })
 })
+
+app.get('/event', (req, res) => {
+    let sql = 'SELECT * FROM event_activities';
+    let query = db.query(sql, (err, results) => {
+        if(err) throw err;
+        res.send(results);
+    })
+});
 
 app.listen('4200', () => {
     console.log("Server started on port 4200");
