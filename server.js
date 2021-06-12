@@ -8,7 +8,8 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'extracurricular_activities'
+    database: 'extracurricular_activities',
+    multipleStatements: true
 });
 
 app.use((req, res, next) => {
@@ -49,8 +50,16 @@ app.get('/program', (req, res) => {
     let sql = 'SELECT * FROM program';
     let query = db.query(sql, (err, results) => {
         if(err) throw err;
+        res.send(results);
+    })
+});
 
-        console.log(results);
+app.get('/program/event', (req, res) => {
+    console.log();
+    let q = "'" + req.query.programName + "'";
+    let sql = 'SELECT Name FROM event_activities where ProgramName = ' + q;
+    let query = db.query(sql, (err, results) => {
+        if(err) throw err;
         res.send(results);
     })
 });
@@ -60,9 +69,25 @@ app.post('/program', (req, res) => {
     let sql = 'INSERT INTO program SET ?';
     let query = db.query(sql, post, err => {
         if(err) throw err;
-        res.send('created new program');
+        res.send('inserted success');
     })
+})
 
+app.post('/event', (req, res) => {
+    let post = req.body.event;
+    let sql1 = 'INSERT INTO event_activities SET ?';
+    let name = req.body.programEvents;
+    console.log(name);
+
+    let sql2 = "UPDATE program SET ProgramEvents = '" + name + "' WHERE Name = '" + post.ProgramName + "'";
+
+    let sql = sql1 + ";" + sql2;
+    console.log(sql);
+    
+    let query = db.query(sql, post, err => {
+        if(err) throw err;
+        res.send('inserted success');
+    })
 })
 
 app.listen('4200', () => {

@@ -6,12 +6,12 @@ import FormErrorList from './FormErrorList';
 
 const EventCreate = props => {
 
-    const [eventName, setEventName] = useState("");
-    const [programName, setProgramName] = useState(props.programList[0]);
-    const [duration, setDuration] = useState(0);
-    const [eventDate, setEventDate] = useState(new Date());
-    const [venue, setVenue] = useState("");
-    const [type, setType] = useState("");
+    const [EventName, setEventName] = useState("");
+    const [ProgramName, setProgramName] = useState(props.programList[0]);
+    const [Duration, setDuration] = useState(0);
+    const [EventDate, setEventDate] = useState(new Date());
+    const [Venue, setVenue] = useState("");
+    const [Type, setType] = useState("Sport");
 
     const [formValid, setFormValid] = useState(true);
     const [eventNameValid, setEventNameValid] = useState("");
@@ -26,7 +26,7 @@ const EventCreate = props => {
         errorList = [];
         setFormValid(true);
 
-        if (eventName === "") {
+        if (EventName === "") {
             valid = false;
             setEventNameValid("error");
             setFormValid(false);
@@ -35,7 +35,7 @@ const EventCreate = props => {
             setEventNameValid("");
         }
 
-        if (venue === "") {
+        if (Venue === "") {
             valid = false;
             setVenueValid("error");
             setFormValid(false);
@@ -44,7 +44,7 @@ const EventCreate = props => {
             setVenueValid("");
         }
 
-        if (duration <= 0) {
+        if (Duration <= 0) {
             valid = false;
             setDurationValid("error");
             setFormValid(false);
@@ -61,6 +61,21 @@ const EventCreate = props => {
         e.preventDefault();
 
         checkValid();
+
+        if (valid) {
+            const date = EventDate.getFullYear() + '-' + (EventDate.getMonth() + 1) + '-' + EventDate.getDate();
+
+            const event = {
+                Name: EventName,
+                ProgramName,
+                Duration,
+                EventDate: date,
+                Venue,
+                Type
+            }
+            props.closePopupEvent(event);
+        }
+
     }
 
     return (
@@ -84,7 +99,7 @@ const EventCreate = props => {
                     <div className="two fields">
                         <div className="field">
                             <label>Event Date</label>
-                            <DatePicker selected={eventDate} onChange={(date) => setEventDate(date)} />
+                            <DatePicker selected={EventDate} onChange={(date) => setEventDate(date)} />
                         </div>
                         <div className={`field required ${durationValid}`}>
                             <label>Duration Expectation (hour)</label>
