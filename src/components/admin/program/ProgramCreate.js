@@ -3,13 +3,14 @@ import '../../../style/PopupCreate.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import FormErrorList from './FormErrorList';
+import Select from 'react-select';
 
 const ProgramCreate = props => {
     const [Name, setName] = useState("");
     const [Abbreviation, setAbbreviation] = useState("");
     const [Type, setType] = useState("Sport");
     const [Recommandation_Level, setRecommandation_Level] = useState("Elementary");
-    const [Manager, setManager] = useState("Ray");
+    const [Manager, setManager] = useState([]);
     const [Director, setDirector] = useState("Ray");
     const [StartDate, setStartDate] = useState(new Date());
     const [EndDate, setEndDate] = useState(new Date());
@@ -20,8 +21,24 @@ const ProgramCreate = props => {
     const [nameValid, setNameValid] = useState("");
     const [abbreviationValid, setAbbreviationValid] = useState("");
     const [durationValid, setDurationValid] = useState("");
+    const [managerValid, setManagerValid] = useState("");
     const [dateValid, setDateValid] = useState("");
     const [errorMessageList, setErrorMessageList] = useState([]);
+
+    const managerList = [
+        {
+            value: "Ray",
+            label: "Ray"
+        },
+        {
+            value: "Ken",
+            label: "Ken"
+        },
+        {
+            value: "Amy",
+            label: "Amy"
+        }
+    ];
 
     let valid = true;
     let errorList = [];
@@ -77,6 +94,15 @@ const ProgramCreate = props => {
             setDateValid("");
         }
 
+        if(Manager.length<1){
+            valid = false;
+            setManagerValid("error");
+            setFormValid(false);
+            errorList.push("Manager is required");
+        }else{
+            setManagerValid("");
+        }
+
         setErrorMessageList(errorList);
     }
 
@@ -88,14 +114,21 @@ const ProgramCreate = props => {
         if (valid) {
             const sDate = StartDate.getFullYear() + '-' + (StartDate.getMonth() + 1) + '-' + StartDate.getDate();
             const eDate = EndDate.getFullYear() + '-' + (EndDate.getMonth() + 1) + '-' + EndDate.getDate();
-    
+            let m = "";
+            for(let i=0; i<Manager.length; i++){
+                if(i===0){
+                    m = Manager[i];
+                }else{
+                    m += "|" + Manager[i];
+                }
+            }
 
             const program = {
                 Name,
                 Abbreviation,
                 Type,
                 Recommandation_Level,
-                Manager,
+                Manager: m,
                 Director,
                 StartDate: sDate,
                 EndDate: eDate,
@@ -150,13 +183,17 @@ const ProgramCreate = props => {
                                 <option value="Amy">Amy</option>
                             </select>
                         </div>
-                        <div className="field">
+                        <div className={`required field ${managerValid}`}>
                             <label>Manager</label>
-                            <select className="ui fluid dropdown" onChange={e => setManager(e.target.value)}>
-                                <option value="Ray">Ray</option>
-                                <option value="Ken">Ken</option>
-                                <option value="Amy">Amy</option>
-                            </select>
+                            <Select
+                                className="ui fluid dropdown"
+                                placeholder="Select Manager"
+                                options={managerList}
+                                value={managerList.filter(obj => Manager.includes(obj.value))} 
+                                onChange={e => setManager(Array.isArray(e) ? e.map(x => x.value) : [])}
+                                isMulti 
+                                isClearable
+                            />
                         </div>
                     </div>
                     <div className="fields">

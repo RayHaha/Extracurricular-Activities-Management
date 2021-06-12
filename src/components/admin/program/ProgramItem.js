@@ -10,6 +10,32 @@ const ProgramItem = props => {
         events = program.ProgramEvents.split("|");
     }
 
+    const EventList = () => {
+        if(events.length > 0){
+            return events.map(e =>(
+                <div className="item" key={e}>
+                    <div className="ui basic label">
+                        {e}
+                    </div>
+                </div>
+            ));
+        }
+
+        return <div className="ui basic label">No Event</div>;
+    }
+
+    
+    let managers = program.Manager.split("|");
+
+    const ManagerList = () => {
+        return managers.map(m => (
+            <div className="ui basic label" key={m}>
+                {m}
+            </div>
+        ));
+    }
+
+
     return (
         <div className="item">
             <div className="content">
@@ -79,9 +105,7 @@ const ProgramItem = props => {
                             <div className="ui grey basic label">
                                 Manager
                             </div>
-                            <div className="ui basic label">
-                                {program.Manager}
-                            </div>
+                            <ManagerList />
                         </div>
                         <div className="inline field">
                             <div className="ui grey basic label">
@@ -106,7 +130,7 @@ const ProgramItem = props => {
                         </div>
                         <div className="ui list">
                         </div>
-                        {events.length>0 ? events.map(e =><div className="item" key={e}><div className="ui basic label">{e}</div></div>) : <div className="ui basic label">No Event</div>}
+                        <EventList />
                     </div>
                 </div>
             </div>
