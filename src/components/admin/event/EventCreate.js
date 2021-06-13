@@ -2,7 +2,7 @@ import '../../../style/PopupCreate.css';
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import FormErrorList from '../program/FormErrorList';
+import FormErrorList from '../../shared/FormErrorList';
 
 const EventCreate = props => {
 

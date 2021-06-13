@@ -42,6 +42,16 @@ app.post('/admin/program', (req, res) => {
     })
 })
 
+app.put('/admin/program', (req, res) => {
+    let post = req.body;
+    console.log(post);
+    let sql = 'UPDATE program SET ? WHERE ID = ?';
+    let query = db.query(sql, [post, post.ID], err => {
+        if(err) throw err;
+        res.send('updated success');
+    })
+})
+
 app.post('/admin/event', (req, res) => {
     let post = req.body.eventToAdd;
     let sql1 = 'INSERT INTO event_activities SET ?';

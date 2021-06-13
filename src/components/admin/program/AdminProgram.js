@@ -24,9 +24,6 @@ const AdminProgram = () => {
     const closePopupProgram = program => {
         setShowPopUpProgram(false);
         if (program.Name) {
-            let p = programs;
-            p.push(program);
-            setPrograms(p);
 
             backend.post('/admin/program', program).then(res => {
                 if (res.status !== 200){

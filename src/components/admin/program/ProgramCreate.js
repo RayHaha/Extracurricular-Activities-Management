@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../../style/PopupCreate.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import FormErrorList from './FormErrorList';
+import FormErrorList from '../../shared/FormErrorList';
 import Select from 'react-select';
 
 const ProgramCreate = props => {
+    console.log(props);
+
     const [Name, setName] = useState("");
     const [Abbreviation, setAbbreviation] = useState("");
     const [Type, setType] = useState("Sport");
@@ -15,7 +17,7 @@ const ProgramCreate = props => {
     const [StartDate, setStartDate] = useState(new Date());
     const [EndDate, setEndDate] = useState(new Date());
     const [SchoolYear, setSchoolYear] = useState(new Date().getFullYear());
-    const [Duration, setDuration] = useState(0);
+    const [Duration, setDuration] = useState("");
 
     const [formValid, setFormValid] = useState(true);
     const [nameValid, setNameValid] = useState("");
@@ -39,6 +41,22 @@ const ProgramCreate = props => {
             label: "Amy"
         }
     ];
+
+    useEffect(() => {
+        if(props.programOnEdit){
+            setName(props.programOnEdit.Name);
+            setAbbreviation(props.programOnEdit.Abbreviation);
+            setType(props.programOnEdit.Type);
+            setRecommandation_Level(props.programOnEdit.Recommandation_Level);
+            let m = props.programOnEdit.Manager.split("|");
+            setManager(m);
+            setDirector(props.programOnEdit.Director);
+            setStartDate(new Date(props.programOnEdit.StartDate));
+            setEndDate(new Date(props.programOnEdit.EndDate));
+            setSchoolYear(props.programOnEdit.SchoolYear);
+            setDuration(props.programOnEdit.Duration);
+        }
+    }, []);
 
     let valid = true;
     let errorList = [];
@@ -123,7 +141,7 @@ const ProgramCreate = props => {
                 }
             }
 
-            const program = {
+            let program = {
                 Name,
                 Abbreviation,
                 Type,
@@ -135,6 +153,9 @@ const ProgramCreate = props => {
                 SchoolYear,
                 Duration
             };
+            if(props.programOnEdit){
+                program["ID"] = props.programOnEdit.ID;
+            }
 
             props.closePopupProgram(program);
         }
@@ -149,17 +170,17 @@ const ProgramCreate = props => {
                     <div className="two fields">
                         <div className={`required field ${nameValid}`}>
                             <label>Name</label>
-                            <input type="text" name="Name" placeholder="Name" onChange={e => setName(e.target.value)} />
+                            <input type="text" defaultValue={Name} name="Name" placeholder="Name" onChange={e => setName(e.target.value)} />
                         </div>
                         <div className={`required field ${abbreviationValid}`}>
                             <label>Abbreviation</label>
-                            <input type="text" name="Abbreviation" placeholder="Abbreviation" onChange={e => setAbbreviation(e.target.value)} />
+                            <input type="text" defaultValue={Abbreviation} name="Abbreviation" placeholder="Abbreviation" onChange={e => setAbbreviation(e.target.value)} />
                         </div>
                     </div>
                     <div className="two fields">
                         <div className="field">
                             <label>Type</label>
-                            <select className="ui fluid dropdown" onChange={e => setType(e.target.value)}>
+                            <select className="ui fluid dropdown" defaultValue={Type} onChange={e => setType(e.target.value)}>
                                 <option value="Sport">Sport</option>
                                 <option value="Academic">Academic</option>
                                 <option value="Art">Art</option>
@@ -167,7 +188,7 @@ const ProgramCreate = props => {
                         </div>
                         <div className="field">
                             <label>School Level Recommendation</label>
-                            <select className="ui fluid dropdown" onChange={e => setRecommandation_Level(e.target.value)}>
+                            <select className="ui fluid dropdown" defaultValue={Recommandation_Level} onChange={e => setRecommandation_Level(e.target.value)}>
                                 <option value="Elementary">Elementary</option>
                                 <option value="Middle">Middle</option>
                                 <option value="High">High</option>
@@ -177,7 +198,7 @@ const ProgramCreate = props => {
                     <div className="two fields">
                         <div className="field">
                             <label>Director</label>
-                            <select className="ui fluid dropdown" onChange={e => setDirector(e.target.value)}>
+                            <select className="ui fluid dropdown" defaultValue={Director} onChange={e => setDirector(e.target.value)}>
                                 <option value="Ray">Ray</option>
                                 <option value="Ken">Ken</option>
                                 <option value="Amy">Amy</option>
@@ -189,6 +210,7 @@ const ProgramCreate = props => {
                                 className="ui fluid dropdown"
                                 placeholder="Select Manager"
                                 options={managerList}
+                                defaultValue={Manager}
                                 value={managerList.filter(obj => Manager.includes(obj.value))} 
                                 onChange={e => setManager(Array.isArray(e) ? e.map(x => x.value) : [])}
                                 isMulti 
@@ -199,19 +221,19 @@ const ProgramCreate = props => {
                     <div className="fields">
                         <div className={`three wide field ${dateValid}`}>
                             <label>Start Date</label>
-                            <DatePicker selected={StartDate} onChange={(date) => setStartDate(date)} />
+                            <DatePicker selected={StartDate} defaultValue={StartDate} onChange={(date) => setStartDate(date)} />
                         </div>
                         <div className={`three wide field ${dateValid}`}>
                             <label>End Date</label>
-                            <DatePicker selected={EndDate} onChange={(date) => setEndDate(date)} />
+                            <DatePicker selected={EndDate} defaultValue={EndDate} onChange={(date) => setEndDate(date)} />
                         </div>
                         <div className="three wide field">
                             <label>School Year</label>
-                            <DatePicker selected={SchoolYear} onChange={(date) => setSchoolYear(date)} showYearPicker dateFormat="yyyy" />
+                            <DatePicker selected={SchoolYear} defaultValue={SchoolYear} onChange={(date) => setSchoolYear(date)} showYearPicker dateFormat="yyyy" />
                         </div>
                         <div className={`seven wide field required ${durationValid}`}>
                             <label>Duration Expectation (hour)</label>
-                            <input type="number" name="DurationExpectation" min="0" placeholder="0" onChange={e => setDuration(e.target.value)} />
+                            <input type="number" name="DurationExpectation" min="0" placeholder="0" defaultValue={Duration} onChange={e => setDuration(e.target.value)} />
                         </div>
                     </div>
                     <button className="ui red button" onClick={props.closePopupProgram}>Cancel</button>
