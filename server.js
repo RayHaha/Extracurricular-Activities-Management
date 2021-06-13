@@ -66,7 +66,7 @@ app.get('/admin/event', (req, res) => {
 });
 
 app.get('/admin/student', (req, res) => {
-    let sql = 'SELECT * FROM student';
+    let sql = 'SELECT * FROM student_list';
     let query = db.query(sql, (err, results) => {
         if(err) throw err;
         res.send(results);
@@ -74,7 +74,7 @@ app.get('/admin/student', (req, res) => {
 });
 
 app.get('/admin/event_record', (req, res) => {
-    let sql = 'SELECT * FROM event_record';
+    let sql = 'SELECT * FROM event_record_list';
     let query = db.query(sql, (err, results) => {
         if(err) throw err;
         res.send(results);

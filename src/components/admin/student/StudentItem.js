@@ -4,8 +4,8 @@ const StudentItem = props => {
     const { student, records } = props;
 
     let programs = [];
-    if (student.ProgramName) {
-        programs = student.ProgramName.split("|");
+    if (student.ProgramList) {
+        programs = student.ProgramList.split("|");
     }
 
     const EventCheck = props => {
