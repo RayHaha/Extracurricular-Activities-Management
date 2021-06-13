@@ -8,11 +8,12 @@ const AdminProgram = () => {
     const [showPopUpProgram, setShowPopUpProgram] = useState(false);
     const [programs, setPrograms] = useState([]);
 
+    const getPrograms = async () => {
+        const response = await backend.get('/admin/program');
+        setPrograms(response.data);
+    }
+
     useEffect(() => {
-        const getPrograms = async () => {
-            const response = await backend.get('/admin/program');
-            setPrograms(response.data);
-        }
         getPrograms();
     }, []);
 
@@ -28,7 +29,11 @@ const AdminProgram = () => {
             setPrograms(p);
 
             backend.post('/admin/program', program).then(res => {
-                if (res.status !== 200) console.log(res);
+                if (res.status !== 200){
+                    console.log(res);
+                }else{
+                    getPrograms();
+                }
             });
         }
     }

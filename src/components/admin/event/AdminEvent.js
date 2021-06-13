@@ -10,17 +10,18 @@ const AdminEvent = () => {
     const [programList, setProgramList] = useState([]);
     const [programs, setPrograms] = useState([]);
 
-    useEffect(() => {
-        const getEvents = async () => {
-            const response = await backend.get('/admin/event');
-            setEvents(response.data);
-        }
-        getEvents();
+    const getEvents = async () => {
+        const response = await backend.get('/admin/event');
+        setEvents(response.data);
+    }
 
-        const getPrograms = async () => {
-            const response = await backend.get('/admin/program');
-            setPrograms(response.data);
-        }
+    const getPrograms = async () => {
+        const response = await backend.get('/admin/program');
+        setPrograms(response.data);
+    }
+
+    useEffect(() => {
+        getEvents();
         getPrograms();
     }, []);
 
@@ -37,23 +38,23 @@ const AdminEvent = () => {
     const closePopupEvent = event => {
         setShowPopUpEvent(false);
         if (event.Name) {
-            let program = programs.filter(program => program.Name === event.ProgramName);
-            let programEvents = "";
-            if (program.length > 0) {
-                programEvents = program[0].ProgramEvents ? program[0].ProgramEvents + "|" + event.Name : event.Name;
-
-            }
             let eventToAdd = {
-                programEvents,
-                event
+                Name: event.Name,
+                Duration: event.Duration,
+                EventDate: event.EventDate,
+                Type: event.Type,
+                Venue: event.Venue
+            }
+            let post = {
+                programName: event.ProgramName,
+                eventToAdd
             }
 
-            let e = events;
-            e.push(event);
-            setEvents(e);
-
-            backend.post('/admin/event', eventToAdd).then(res => {
-                if (res.status !== 200) console.log(res);
+            backend.post('/admin/event', post).then(res => {
+                if (res.status !== 200){
+                    console.log(res)
+                };
+                getEvents();
             });
         }
     }

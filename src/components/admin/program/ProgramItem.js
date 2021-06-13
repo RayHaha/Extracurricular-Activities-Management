@@ -6,8 +6,8 @@ const ProgramItem = props => {
     const EndDate = program.EndDate.substring(0, 10);
 
     let events = [];
-    if(program.ProgramEvents){
-        events = program.ProgramEvents.split("|");
+    if(program.EventsList){
+        events = program.EventsList.split("|");
     }
 
     const EventList = () => {

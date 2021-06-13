@@ -26,7 +26,7 @@ app.use(express.urlencoded());
 app.use(express.json());
 
 app.get('/admin/program', (req, res) => {
-    let sql = 'SELECT * FROM program';
+    let sql = 'SELECT * FROM program_list';
     let query = db.query(sql, (err, results) => {
         if(err) throw err;
         res.send(results);
@@ -43,24 +43,22 @@ app.post('/admin/program', (req, res) => {
 })
 
 app.post('/admin/event', (req, res) => {
-    let post = req.body.event;
+    let post = req.body.eventToAdd;
     let sql1 = 'INSERT INTO event_activities SET ?';
-    let name = req.body.programEvents;
-    console.log(name);
-
-    let sql2 = "UPDATE program SET ProgramEvents = '" + name + "' WHERE Name = '" + post.ProgramName + "'";
+    
+    let n = req.body.programName;
+    let sql2 = `CALL InsertProgramEvent(?)`;
 
     let sql = sql1 + ";" + sql2;
-    console.log(sql);
     
-    let query = db.query(sql, post, err => {
+    let query = db.query(sql, [post, n], err => {
         if(err) throw err;
         res.send('inserted success');
     })
 })
 
 app.get('/admin/event', (req, res) => {
-    let sql = 'SELECT * FROM event_activities';
+    let sql = 'SELECT * FROM event_list';
     let query = db.query(sql, (err, results) => {
         if(err) throw err;
         res.send(results);
