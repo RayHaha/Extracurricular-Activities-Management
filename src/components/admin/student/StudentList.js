@@ -1,22 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import StudentItem from './StudentItem';
-import backend from '../../../api/backend';
 
 const StudentList = props => {
 
-    const [eventRecords, setEventRecords] = useState([]);
-
-    useEffect(() => {
-        const getRecords = async () => {
-            const response = await backend.get('/admin/event_record');
-            setEventRecords(response.data);
-        }
-        getRecords();
-        
-    }, []);
-
+    // map the array of student and filter the event records then use StudentItem to render them
     const events = props.students.map(student => {
-        let records = eventRecords.filter(record => record.StudentName === student.Name);
+        let records = props.eventRecords.filter(record => record.StudentName === student.Name);
         return <StudentItem key={student.Name} student={student} records={records} />;
     });
 

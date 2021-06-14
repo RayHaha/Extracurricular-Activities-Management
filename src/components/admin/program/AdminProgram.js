@@ -5,9 +5,10 @@ import backend from '../../../api/backend';
 
 const AdminProgram = () => {
 
-    const [showPopUpProgram, setShowPopUpProgram] = useState(false);
-    const [programs, setPrograms] = useState([]);
+    const [showPopUpProgram, setShowPopUpProgram] = useState(false);    // show popup or not
+    const [programs, setPrograms] = useState([]);   // program list
 
+    // fetch the data from backend
     const getPrograms = async () => {
         const response = await backend.get('/admin/program');
         setPrograms(response.data);
@@ -17,10 +18,12 @@ const AdminProgram = () => {
         getPrograms();
     }, []);
 
+    // open the popup window to create program
     const openPopupProgram = () => {
         setShowPopUpProgram(true);
     }
 
+    // close the popup window then store the data into database
     const closePopupProgram = program => {
         setShowPopUpProgram(false);
         if (program.Name) {
@@ -35,16 +38,10 @@ const AdminProgram = () => {
         }
     }
 
-    if (programs.length < 1) {
-        return (
-            <div>Loading</div>
-        );
-    }
-
     return (
         <div>
             <button className="ui primary button" onClick={openPopupProgram}>Create Program</button>
-            <ProgramList programs={programs} />
+            <ProgramList programs={programs} getPrograms={getPrograms} />
 
             {showPopUpProgram ? <ProgramCreate closePopupProgram={closePopupProgram} /> : null}
 

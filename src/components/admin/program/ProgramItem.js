@@ -2,14 +2,18 @@ import React from 'react';
 
 const ProgramItem = props => {
     const { program } = props;
+
+    // handle the structure of date
     const StartDate = program.StartDate.substring(0, 10);
     const EndDate = program.EndDate.substring(0, 10);
 
+    // events of the programs was stored as event1|event2|event3... in the view
     let events = [];
     if (program.EventsList) {
         events = program.EventsList.split("|");
     }
 
+    // event list component, map the list into event
     const EventList = () => {
         if (events.length > 0) {
             return events.map(e => (
@@ -28,9 +32,10 @@ const ProgramItem = props => {
         );
     }
 
-
+    // manager of the programs was stored as manager1|manager2|manager3... in the table
     let managers = program.Manager.split("|");
 
+    // manager list component, map the list into manager
     const ManagerList = () => {
         return managers.map(m => (
             <div className="ui basic label" key={m}>
@@ -39,6 +44,7 @@ const ProgramItem = props => {
         ));
     }
 
+    // render
     const ShowItem = () => {
         return (
             <div className="item">

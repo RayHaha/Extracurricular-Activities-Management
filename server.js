@@ -12,6 +12,7 @@ const db = mysql.createConnection({
     multipleStatements: true
 });
 
+// add the header to handle CORS issue
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', "*");
     res.setHeader('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept, Authorization");
@@ -25,6 +26,7 @@ app.use(express.urlencoded());
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json());
 
+// program of admin
 app.get('/admin/program', (req, res) => {
     let sql = 'SELECT * FROM program_list';
     let query = db.query(sql, (err, results) => {
@@ -48,10 +50,11 @@ app.put('/admin/program', (req, res) => {
     let sql = 'UPDATE program SET ? WHERE ID = ?';
     let query = db.query(sql, [post, post.ID], err => {
         if(err) throw err;
-        res.send('updated success');
+        res.send(post);
     })
 })
 
+// event of admin
 app.post('/admin/event', (req, res) => {
     let post = req.body.eventToAdd;
     let sql1 = 'INSERT INTO event_activities SET ?';
@@ -75,6 +78,7 @@ app.get('/admin/event', (req, res) => {
     })
 });
 
+// student of admin
 app.get('/admin/student', (req, res) => {
     let sql = 'SELECT * FROM student_list';
     let query = db.query(sql, (err, results) => {
@@ -91,6 +95,7 @@ app.get('/admin/event_record', (req, res) => {
     })
 });
 
+// run the server on port 4200
 app.listen('4200', () => {
     console.log("Server started on port 4200");
 });

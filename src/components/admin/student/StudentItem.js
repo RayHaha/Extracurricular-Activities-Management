@@ -3,11 +3,13 @@ import React from 'react';
 const StudentItem = props => {
     const { student, records } = props;
 
+    // programs of the student are stored as program1|program2|program3... in the view
     let programs = [];
     if (student.ProgramList) {
         programs = student.ProgramList.split("|");
     }
 
+    // chech whether the event is completed, use different color to represent
     const EventCheck = props => {
         const { program } = props;
         if(program.Completed === 1){
@@ -16,6 +18,7 @@ const StudentItem = props => {
         return <div className="ui red basic label" key={program.EventName}>{program.EventName}({program.Duration})</div>;
     }
 
+    // event list component, map the list into event
     const EventList = props => {
         if(records.length > 0){
             let events = records.filter(r => r.ProgramName === props.program);
@@ -26,6 +29,7 @@ const StudentItem = props => {
         return <div className="ui basic label">No Event</div>;
     }
 
+    // program list component, map the list into program
     const ProgramsList = () => {
         if (programs.length > 0) {
             return programs.map(p => (

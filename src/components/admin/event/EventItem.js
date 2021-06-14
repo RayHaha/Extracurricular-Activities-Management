@@ -2,6 +2,8 @@ import React from 'react';
 
 const EventItem = props => {
     const { event } = props;
+
+    // handle the structure of date
     const EventDate = event.EventDate.substring(0, 10);
 
 

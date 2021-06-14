@@ -5,11 +5,12 @@ import EventCreate from './EventCreate';
 
 const AdminEvent = () => {
 
-    const [showPopUpEvent, setShowPopUpEvent] = useState(false);
-    const [events, setEvents] = useState([]);
-    const [programList, setProgramList] = useState([]);
-    const [programs, setPrograms] = useState([]);
+    const [showPopUpEvent, setShowPopUpEvent] = useState(false);    // show popup or not
+    const [events, setEvents] = useState([]);   // event list
+    const [programList, setProgramList] = useState([]); // program list to show in the EventCreate component
+    const [programs, setPrograms] = useState([]);   // get the programs to get the name
 
+    // fetch the data from backend
     const getEvents = async () => {
         const response = await backend.get('/admin/event');
         setEvents(response.data);
@@ -25,6 +26,7 @@ const AdminEvent = () => {
         getPrograms();
     }, []);
 
+    // open the popup window to create event
     const openPopupEvent = () => {
         setShowPopUpEvent(true);
         let programNameList = [];
@@ -35,6 +37,7 @@ const AdminEvent = () => {
 
     }
 
+    // close the popup window then store the data into database
     const closePopupEvent = event => {
         setShowPopUpEvent(false);
         if (event.Name) {
@@ -57,12 +60,6 @@ const AdminEvent = () => {
                 getEvents();
             });
         }
-    }
-
-    if (events.length < 1) {
-        return (
-            <div>Loading</div>
-        );
     }
 
     return (

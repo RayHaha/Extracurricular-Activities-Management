@@ -5,9 +5,10 @@ import 'react-datepicker/dist/react-datepicker.css';
 import FormErrorList from '../../shared/FormErrorList';
 import Select from 'react-select';
 
+// the component to create or edit program
 const ProgramCreate = props => {
-    console.log(props);
 
+    // the parameters of the program
     const [Name, setName] = useState("");
     const [Abbreviation, setAbbreviation] = useState("");
     const [Type, setType] = useState("Sport");
@@ -19,6 +20,7 @@ const ProgramCreate = props => {
     const [SchoolYear, setSchoolYear] = useState(new Date().getFullYear());
     const [Duration, setDuration] = useState("");
 
+    // the parameters to show and handle the validation of the form
     const [formValid, setFormValid] = useState(true);
     const [nameValid, setNameValid] = useState("");
     const [abbreviationValid, setAbbreviationValid] = useState("");
@@ -27,6 +29,7 @@ const ProgramCreate = props => {
     const [dateValid, setDateValid] = useState("");
     const [errorMessageList, setErrorMessageList] = useState([]);
 
+    // manager list 
     const managerList = [
         {
             value: "Ray",
@@ -42,6 +45,7 @@ const ProgramCreate = props => {
         }
     ];
 
+    // if the component is opened by edit side, set the default value
     useEffect(() => {
         if(props.programOnEdit){
             setName(props.programOnEdit.Name);
@@ -56,8 +60,9 @@ const ProgramCreate = props => {
             setSchoolYear(props.programOnEdit.SchoolYear);
             setDuration(props.programOnEdit.Duration);
         }
-    }, []);
+    }, [props.programOnEdit]);
 
+    // check the validation and set the error list
     let valid = true;
     let errorList = [];
 
@@ -65,6 +70,7 @@ const ProgramCreate = props => {
         errorList = [];
         setFormValid(true);
 
+        // check the validation of Name
         if (Name === "") {
             valid = false;
             setNameValid("error");
@@ -73,6 +79,8 @@ const ProgramCreate = props => {
         }else{
             setNameValid("");
         }
+
+        // check the validation of Abbreviation
         if (Abbreviation === "") {
             valid = false;
             setAbbreviationValid("error");
@@ -94,6 +102,8 @@ const ProgramCreate = props => {
                 }
             }
         }
+
+        // check the validation of Duration
         if (Duration <= 0) {
             valid = false;
             setDurationValid("error");
@@ -103,6 +113,7 @@ const ProgramCreate = props => {
             setDurationValid("");
         }
 
+        // check the validation of Date
         if(StartDate.getTime() > EndDate.getTime()){
             valid = false;
             setDateValid("error");
@@ -112,6 +123,7 @@ const ProgramCreate = props => {
             setDateValid("");
         }
 
+        // check the validation of Manager
         if(Manager.length<1){
             valid = false;
             setManagerValid("error");
@@ -121,17 +133,24 @@ const ProgramCreate = props => {
             setManagerValid("");
         }
 
+        // set the error message
         setErrorMessageList(errorList);
     }
 
+    // operations while the form is submitted
     const onFormSubmit = e => {
         e.preventDefault();
 
+        // check the validation first
         checkValid();
 
         if (valid) {
+
+            // handle the type and structure of the data
             const sDate = StartDate.getFullYear() + '-' + (StartDate.getMonth() + 1) + '-' + StartDate.getDate();
             const eDate = EndDate.getFullYear() + '-' + (EndDate.getMonth() + 1) + '-' + EndDate.getDate();
+            
+            // manager list is stored in database as: name1|name2|name3...
             let m = "";
             for(let i=0; i<Manager.length; i++){
                 if(i===0){
@@ -153,10 +172,13 @@ const ProgramCreate = props => {
                 SchoolYear,
                 Duration
             };
+
+            // if the component is opened by edit side, need ID to update the record
             if(props.programOnEdit){
                 program["ID"] = props.programOnEdit.ID;
             }
 
+            // close the popup and send back the program
             props.closePopupProgram(program);
         }
     }

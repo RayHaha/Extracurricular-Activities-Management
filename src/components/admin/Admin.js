@@ -6,21 +6,24 @@ import AdminStudent from './student/AdminStudent';
 import AdminEvent from './event/AdminEvent';
 
 const Admin = () => {
-    const[catelog, setCatelog] = useState("Program");
+
+    // use catelog to decide the list to show
+    const [catelog, setCatelog] = useState("Program");
 
     const onCatelogClick = (catelog) => {
         setCatelog(catelog);
     }
 
     let route;
-    if(catelog==="Program"){
+    if (catelog === "Program") {
         route = <AdminProgram />;
-    }else if(catelog==="Student"){
+    } else if (catelog === "Student") {
         route = <AdminStudent />;
-    }else{
+    } else {
         route = <AdminEvent />;
     }
-    let notificationNumber = 0;
+    // hide the notification number because haven't done yet
+    // let notificationNumber = 0;
 
     return (
         <div>
@@ -28,9 +31,13 @@ const Admin = () => {
                 <button className="ui black button" onClick={() => onCatelogClick("Program")}>Program</button>
                 <button className="ui grey button" onClick={() => onCatelogClick("Student")}>Student</button>
                 <button className="ui brown button" onClick={() => onCatelogClick("Event")}>Event</button>
-                <button className="ui orange button">Notification({notificationNumber})</button>
+                {/* hide the notification button because haven't done yet */}
+                {/* <button className="ui orange button">Notification({notificationNumber})</button> */}
+
                 <div className="right menu">
-                    <button className="ui primary basic button"><Link to="/">Logout</Link></button>
+                    <div className="item">
+                        <Link className="ui primary basic label" to="/">Logout</Link>
+                    </div>
                 </div>
             </div>
             <div className="ui container">

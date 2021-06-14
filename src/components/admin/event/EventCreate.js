@@ -4,8 +4,10 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import FormErrorList from '../../shared/FormErrorList';
 
+// the component to create event
 const EventCreate = props => {
 
+    // the parameters of the event
     const [EventName, setEventName] = useState("");
     const [ProgramName, setProgramName] = useState(props.programList[0]);
     const [Duration, setDuration] = useState(0);
@@ -13,12 +15,15 @@ const EventCreate = props => {
     const [Venue, setVenue] = useState("");
     const [Type, setType] = useState("Sport");
 
+    // the parameters to show and handle the validation of the form
     const [formValid, setFormValid] = useState(true);
+    const [programNameValid, setProgramNameValid] = useState("");
     const [eventNameValid, setEventNameValid] = useState("");
     const [venueValid, setVenueValid] = useState("");
     const [durationValid, setDurationValid] = useState("");
     const [errorMessageList, setErrorMessageList] = useState([]);
 
+    // check the validation and set the error list
     let valid = true;
     let errorList = [];
 
@@ -26,6 +31,17 @@ const EventCreate = props => {
         errorList = [];
         setFormValid(true);
 
+        // check the validation of ProgramName
+        if (!ProgramName || ProgramName === "") {
+            valid = false;
+            setProgramNameValid("error");
+            setFormValid(false);
+            errorList.push("Program name is required.");
+        } else {
+            setProgramNameValid("");
+        }
+
+        // check the validation of EventName
         if (EventName === "") {
             valid = false;
             setEventNameValid("error");
@@ -35,6 +51,7 @@ const EventCreate = props => {
             setEventNameValid("");
         }
 
+        // check the validation of Venue
         if (Venue === "") {
             valid = false;
             setVenueValid("error");
@@ -44,6 +61,7 @@ const EventCreate = props => {
             setVenueValid("");
         }
 
+        // check the validation of Duration
         if (Duration <= 0) {
             valid = false;
             setDurationValid("error");
@@ -53,16 +71,20 @@ const EventCreate = props => {
             setDurationValid("");
         }
 
+        // set the error message
         setErrorMessageList(errorList);
 
     }
 
+    // operations while the form is submitted
     const onFormSubmit = e => {
         e.preventDefault();
 
+        // check the validation first
         checkValid();
 
         if (valid) {
+            // handle the type and structure of the data
             const date = EventDate.getFullYear() + '-' + (EventDate.getMonth() + 1) + '-' + EventDate.getDate();
 
             const event = {
@@ -73,6 +95,8 @@ const EventCreate = props => {
                 Venue,
                 Type
             }
+
+            // close the popup and send back the event
             props.closePopupEvent(event);
         }
 
@@ -89,7 +113,7 @@ const EventCreate = props => {
                             <label>Event Name</label>
                             <input type="text" name="Event Name" placeholder="Event Name" onChange={e => setEventName(e.target.value)} />
                         </div>
-                        <div className="field">
+                        <div className={`field ${programNameValid}`}>
                             <label>Program Name</label>
                             <select className="ui fluid dropdown" onChange={e => setProgramName(e.target.value)}>
                                 {props.programList.map(program => <option key={program} value={program}>{program}</option>)}

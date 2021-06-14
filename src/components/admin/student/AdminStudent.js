@@ -4,10 +4,12 @@ import backend from '../../../api/backend';
 
 const AdminStudent = () => {
 
-    const [students, setStudents] = useState([]);
-    const [studentsToShow, setStudentsToShow] = useState([]);
-    const [levelChecked, setLevelChecked] = useState([1, 1, 1]);
+    const [students, setStudents] = useState([]);   // student list
+    const [studentsToShow, setStudentsToShow] = useState([]);   // student list to show after filter
+    const [levelChecked, setLevelChecked] = useState([1, 1, 1]);    // filter: [elementary, middle, high]
+    const [eventRecords, setEventRecords] = useState([]); // the event record list to show some information between event and student
 
+    // fetch the data from backend
     useEffect(() => {
         const getStudents = async () => {
             const response = await backend.get('/admin/student');
@@ -16,14 +18,22 @@ const AdminStudent = () => {
         }
         getStudents();
 
+        const getRecords = async () => {
+            const response = await backend.get('/admin/event_record');
+            setEventRecords(response.data);
+        }
+        getRecords();
+
     }, []);
 
+    // while clicking on the checkbox, change the value of the filter
     const LevelChange = (level, checked) => {
         let l = levelChecked;
         l[level] = checked ? 1 : 0;
         CollectList(l);
     }
 
+    // decide the student list to show base on the filter
     const CollectList = level => {
         let sList = [];
         for (let i = 0; i < level.length; i++) {
@@ -73,7 +83,7 @@ const AdminStudent = () => {
                     </div>
                 </div>
             </div>
-            <StudentList students={studentsToShow} />
+            <StudentList students={studentsToShow} eventRecords={eventRecords}/>
         </div>
     );
 }
